@@ -3,6 +3,7 @@
 #include "ZombieArena.h"
 #include "TextureHolder.h"
 #include "Bullet.h"
+#include "Pickup.h"
 
 using namespace sf;
 
@@ -63,6 +64,10 @@ int main()
     Sprite spriteCrosshair;
     spriteCrosshair.setTexture(TextureHolder::GetTexture("graphics/crosshair.png"));
     spriteCrosshair.setOrigin(25, 25);
+
+    // create pickups
+    Pickup healthPickup(1);
+    Pickup ammoPickup(2);
 
     // Main game loop
     while (window.isOpen())
@@ -266,6 +271,8 @@ int main()
                     bullets[i].update(dtAsSeconds);
                 }
             }
+            healthPickup.update(dtAsSeconds);
+            ammoPickup.update(dtAsSeconds);
         } // end updating frame
 
         // draw scene
@@ -288,6 +295,14 @@ int main()
             }
             window.draw(player.getSprite());
             window.draw(spriteCrosshair);
+            if (ammoPickup.isSpawned())
+            {
+                window.draw(ammoPickup.getSprite());
+            }
+            if (healthPickup.isSpawned())
+            {
+                window.draw(healthPickup.getSprite());
+            }
         }
 
         if (state == State::LEVELING_UP)
